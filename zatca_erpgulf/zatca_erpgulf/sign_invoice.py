@@ -1349,6 +1349,10 @@ def zatca_background(invoice_number, source_doc, bypass_background_check=False):
 @frappe.whitelist(allow_guest=False)
 def zatca_background_on_submit(doc, _method=None, bypass_background_check=False):
     """referes according to the ZATC based sytem with the submitbutton of the sales invoice"""
+
+    if doc.company and frappe.db.get_value("Company", doc.company, "country") != "Saudi Arabia":
+        return
+    
     try:
         source_doc = doc
         sales_invoice_doc = doc

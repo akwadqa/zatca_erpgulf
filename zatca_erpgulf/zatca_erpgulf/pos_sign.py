@@ -1031,6 +1031,9 @@ def is_qr_and_xml_attached(sales_invoice_doc):
 def zatca_background_on_submit(doc, _method=None, bypass_background_check=False):
     """Function for zatca background on submit"""
 
+    if doc.company and frappe.db.get_value("Company", doc.company, "country") != "Saudi Arabia":
+        return
+
     try:
         source_doc = doc
         pos_invoice_doc = doc

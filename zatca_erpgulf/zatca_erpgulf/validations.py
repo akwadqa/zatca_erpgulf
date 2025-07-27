@@ -23,6 +23,10 @@ def before_save(doc, method=None):  # pylint: disable=unused-argument
     """
     Prevents editing, canceling, or saving of invoices that are already submitted to ZATCA.
     """
+
+    if doc.company and frappe.db.get_value("Company", doc.company, "country") != "Saudi Arabia":
+        return
+
     if doc.custom_zatca_status in ("REPORTED", "CLEARED"):
         frappe.throw(
             _(
@@ -36,6 +40,10 @@ def duplicating_invoice(doc, method=None):  # pylint: disable=unused-argument
     Duplicates the invoice for Frappe version 13,
     where the no-copy setting on fields is not available.
     """
+
+    if doc.company and frappe.db.get_value("Company", doc.company, "country") != "Saudi Arabia":
+        return
+    
     if int(frappe.__version__.split(".", maxsplit=1)[0]) == 13:
         frappe.msgprint(_("Duplicating invoice"))
         doc.custom_uuid = "Not submitted"

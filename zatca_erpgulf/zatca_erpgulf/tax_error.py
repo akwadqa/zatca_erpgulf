@@ -13,6 +13,10 @@ def validate_sales_invoice_taxes(doc, event=None):
     :param sales_invoice_doc: The sales invoice document object
     :return: None
     """
+
+    if doc.company and frappe.db.get_value("Company", doc.company, "country") != "Saudi Arabia":
+        return
+    
     is_gpos_installed = "gpos" in frappe.get_installed_apps()
     field_exists = frappe.get_meta(doc.doctype).has_field("custom_unique_id")
 
